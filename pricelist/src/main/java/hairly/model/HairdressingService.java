@@ -17,11 +17,13 @@ public class HairdressingService {
     private long id;
     private String name;
     private int price;
+    private int durationInMinutes;
     private Category category;
 
-    public HairdressingService(String name, int price, Category category) {
+    public HairdressingService(String name, int price, int duration, Category category) {
         this.name = name;
         this.price = price;
+        this.durationInMinutes = duration;
         this.category = category;
     }
 }

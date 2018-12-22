@@ -28,14 +28,14 @@ public class PriceListApplicationMain
     @Bean
     InitializingBean fillDatabase(){
         return () -> {
-            priceListRepository.save(new HairdressingService("wash, styling", 55, FEMALE));
-            priceListRepository.save(new HairdressingService("wash, haircut, styling", 85, FEMALE));
-            priceListRepository.save(new HairdressingService("wash, styling, color", 190, FEMALE));
-            priceListRepository.save(new HairdressingService("wash, haircut, styling, color", 220, FEMALE));
-            priceListRepository.save(new HairdressingService("decolouring", 115, FEMALE));
-            priceListRepository.save(new HairdressingService("updo", 135, FEMALE));
-            priceListRepository.save(new HairdressingService("wash, styling", 40, MALE));
-            priceListRepository.save(new HairdressingService("wash, haircut, styling", 65, MALE));
+            priceListRepository.save(new HairdressingService("wash, styling", 55, 40, FEMALE));
+            priceListRepository.save(new HairdressingService("wash, haircut, styling", 85, 60, FEMALE));
+            priceListRepository.save(new HairdressingService("wash, styling, color", 190, 180, FEMALE));
+            priceListRepository.save(new HairdressingService("wash, haircut, styling, color", 220, 240, FEMALE));
+            priceListRepository.save(new HairdressingService("decolouring", 115, 90, FEMALE));
+            priceListRepository.save(new HairdressingService("updo", 135, 60, FEMALE));
+            priceListRepository.save(new HairdressingService("wash, styling", 40, 30, MALE));
+            priceListRepository.save(new HairdressingService("wash, haircut, styling", 65, 60, MALE));
         };
     }
 }
