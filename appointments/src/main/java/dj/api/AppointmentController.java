@@ -26,18 +26,18 @@ public class AppointmentController {
         return appointmentService.getAll();
     }
 
-    @GetMapping(produces = APPLICATION_JSON_VALUE, path="/client/{clientId}")
-    public List<Appointment> getAllAppointmentsOfClient(@PathVariable long clientId){
+    @GetMapping(produces = APPLICATION_JSON_VALUE, params="clientId")
+    public List<Appointment> getAllAppointmentsOfClient(@RequestParam long clientId){
         return appointmentService.getAllByClientId(clientId);
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    public void addAppointment(@RequestBody Appointment appointment){
-        appointmentService.add(appointment);
+    public Appointment addAppointment(@RequestBody Appointment appointment){
+        return appointmentService.add(appointment);
     }
 
-    @DeleteMapping(path="/{id}")
-    public ResponseEntity deleteAppointment(@PathVariable long id){
+    @DeleteMapping()
+    public ResponseEntity deleteAppointment(@RequestParam long id){
         appointmentService.delete(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }

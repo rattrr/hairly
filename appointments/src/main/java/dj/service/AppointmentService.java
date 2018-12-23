@@ -27,10 +27,11 @@ public class AppointmentService {
         return appointmentRepository.getAppointmentsByClientIdEquals(clientId);
     }
 
-    public void add(Appointment appointment){
+    public Appointment add(Appointment appointment){
         if(timeperiodIsNotOverlaping(appointment) && timeperiodIsValid(appointment)){
-            appointmentRepository.save(appointment);
+            return appointmentRepository.save(appointment);
         }
+        else return new Appointment();
     }
 
     public void delete(long id){
