@@ -1,27 +1,24 @@
-package dj.model;
+package dj.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import dj.model.Category;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
 @Data
 @NoArgsConstructor
-public class HairdressingService {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+public class HairdressingServiceData {
     private String name;
     private int price;
     private int durationInMinutes;
-    @ManyToOne
-    private Category category;
+    private String category;
 
-    public HairdressingService(String name, int price, int duration) {
+    public HairdressingServiceData(String name, int price, int duration, String category) {
         this.name = name;
         this.price = price;
         this.durationInMinutes = duration;
+        this.category = category;
     }
 }

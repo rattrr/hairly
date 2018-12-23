@@ -1,12 +1,12 @@
 package dj.api;
 
+import dj.dto.CategoryData;
+import dj.dto.HairdressingServiceData;
+import dj.model.Category;
 import dj.model.HairdressingService;
 import dj.service.PriceListService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,13 +23,23 @@ public class PriceListController {
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
-    public List<HairdressingService> getClients(){
+    public List<HairdressingService> getService(){
         return priceListService.getAll();
     }
 
-    @GetMapping(produces = APPLICATION_JSON_VALUE, path="/{id}")
-    public HairdressingService getClientById(@PathVariable long id){
+    @GetMapping(produces = APPLICATION_JSON_VALUE, params = "id")
+    public HairdressingService getServiceById(@RequestParam long id){
         return priceListService.getById(id);
+    }
+
+    @PostMapping(consumes = APPLICATION_JSON_VALUE)
+    public HairdressingService addService(@RequestBody HairdressingServiceData serviceData){
+        return priceListService.add(serviceData);
+    }
+
+    @PostMapping(consumes = APPLICATION_JSON_VALUE, path="/new_category")
+    public Category addCategory(@RequestBody CategoryData categoryData){
+        return priceListService.addCategory(categoryData);
     }
 
 }

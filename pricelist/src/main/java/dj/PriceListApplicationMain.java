@@ -1,23 +1,25 @@
 package dj;
 
-import dj.model.HairdressingService;
-import dj.repository.PriceListRepository;
+import dj.model.Category;
+import dj.dto.HairdressingServiceData;
+import dj.repository.CategoryRepository;
+import dj.service.PriceListService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import static dj.model.Category.*;
-
 @SpringBootApplication
 public class PriceListApplicationMain
 {
-    private PriceListRepository priceListRepository;
+    private final PriceListService priceListService;
+    private final CategoryRepository categoryRepository;
 
     @Autowired
-    public PriceListApplicationMain(PriceListRepository priceListRepository) {
-        this.priceListRepository = priceListRepository;
+    public PriceListApplicationMain(PriceListService priceListService, CategoryRepository categoryRepository) {
+        this.priceListService = priceListService;
+        this.categoryRepository = categoryRepository;
     }
 
     public static void main(String[] args )
@@ -28,14 +30,16 @@ public class PriceListApplicationMain
     @Bean
     InitializingBean fillDatabase(){
         return () -> {
-            priceListRepository.save(new HairdressingService("wash, styling", 55, 40, FEMALE));
-            priceListRepository.save(new HairdressingService("wash, haircut, styling", 85, 60, FEMALE));
-            priceListRepository.save(new HairdressingService("wash, styling, color", 190, 180, FEMALE));
-            priceListRepository.save(new HairdressingService("wash, haircut, styling, color", 220, 240, FEMALE));
-            priceListRepository.save(new HairdressingService("decolouring", 115, 90, FEMALE));
-            priceListRepository.save(new HairdressingService("updo", 135, 60, FEMALE));
-            priceListRepository.save(new HairdressingService("wash, styling", 40, 30, MALE));
-            priceListRepository.save(new HairdressingService("wash, haircut, styling", 65, 60, MALE));
+            categoryRepository.save(new Category("WOMEN"));
+            categoryRepository.save(new Category("MEN"));
+            priceListService.add(new HairdressingServiceData("wash, styling", 55, 40, "WOMEN"));
+            priceListService.add(new HairdressingServiceData("wash, haircut, styling", 85, 60, "WOMEN"));
+            priceListService.add(new HairdressingServiceData("wash, styling, color", 190, 180, "WOMEN"));
+            priceListService.add(new HairdressingServiceData("wash, haircut, styling, color", 220, 240, "WOMEN"));
+            priceListService.add(new HairdressingServiceData("decolouring", 115, 90, "WOMEN"));
+            priceListService.add(new HairdressingServiceData("updo", 135, 60, "WOMEN"));
+            priceListService.add(new HairdressingServiceData("wash, styling", 40, 30, "MEN"));
+            priceListService.add(new HairdressingServiceData("wash, haircut, styling", 65, 60, "MEN"));
         };
     }
 }
