@@ -42,10 +42,7 @@ public class ClientController {
 
     @DeleteMapping
     public void deleteClient(@RequestParam long id){
-        restTemplate.delete("http://localhost:8083/clients?id=" + id);
+        restTemplate.delete(url + "?id=" + id);
     }
 
-    private boolean clientExist(long clientId){
-        return restTemplate.getForObject("http://localhost:8083/clients/" + clientId, String.class) != null;
-    }
 }
