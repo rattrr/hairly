@@ -26,19 +26,19 @@ public class ClientController {
         return clientService.getAll();
     }
 
-    @GetMapping(produces = APPLICATION_JSON_VALUE, path="/{id}")
-    public Client getClientById(@PathVariable long id){
+    @GetMapping(produces = APPLICATION_JSON_VALUE, params="id")
+    public Client getClientById(@RequestParam long id){
         return clientService.getById(id);
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    public void addClient(@RequestBody Client client){
-        clientService.add(client);
+    public Client addClient(@RequestBody Client client){
+        return clientService.add(client);
     }
 
     @PutMapping(consumes = APPLICATION_JSON_VALUE)
-    public void updateClient(@RequestBody Client client){
-        clientService.update(client);
+    public Client updateClient(@RequestBody Client client){
+        return clientService.update(client);
     }
 
     @DeleteMapping()

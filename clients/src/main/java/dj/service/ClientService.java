@@ -29,16 +29,18 @@ public class ClientService {
         return client.orElse(null);
     }
 
-    public void add(Client client){
+    public Client add(Client client){
         if(clientNotExists(client)){
-            clientRepository.save(client);
+            return clientRepository.save(client);
         }
+        return new Client();
     }
 
-    public void update(Client client){
+    public Client update(Client client){
         if(existsClientWithId(client.getId())){
-            clientRepository.save(client);
+            return clientRepository.save(client);
         }
+        return new Client();
     }
 
     public void delete(long id){
