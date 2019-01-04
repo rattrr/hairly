@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.ws.Response;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,10 +40,8 @@ public class PriceListController {
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<HairdressingService> addService(@RequestBody HairdressingServiceData serviceData){
-        Optional<HairdressingService> serviceOptional = priceListService.add(serviceData);
-        return serviceOptional
-                .map(service -> new ResponseEntity<>(service, HttpStatus.CREATED))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
+        HairdressingService service = priceListService.add(serviceData);
+        return new ResponseEntity<>(service, HttpStatus.CREATED);
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, path="/new_category")

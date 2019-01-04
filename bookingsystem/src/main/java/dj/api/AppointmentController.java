@@ -31,7 +31,7 @@ public class AppointmentController {
 
     @GetMapping(produces = APPLICATION_JSON_VALUE, params="clientId")
     public String getAllAppointmentsOfClient(@RequestParam long clientId){
-        return restTemplate.getForObject(url + "?id=" + clientId, String.class);
+        return restTemplate.getForObject(url + "?clientId=" + clientId, String.class);
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)

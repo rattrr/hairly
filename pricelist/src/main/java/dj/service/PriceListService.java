@@ -34,16 +34,18 @@ public class PriceListService {
         return priceListRepository.findById(id);
     }
 
-    public Optional<HairdressingService> add(HairdressingServiceData dtService){
-        if(categoryExists(dtService.getCategory())){
-            HairdressingService service = new HairdressingService(dtService.getName(), dtService.getPrice(), dtService.getDurationInMinutes());
-            Category category = getCategoryByName(dtService.getCategory());
-            service.setCategory(category);
-            category.addService(service);
-            categoryRepository.save(category);
-            return Optional.of(priceListRepository.save(service));
+    public HairdressingService add(HairdressingServiceData dtService){
+        Category category;
+        if(categoryExists(dtService.getCategoryName())) {
+            category = getCategoryByName(dtService.getCategoryName());
+        }else {
+            category = new Category(dtService.getCategoryName());
         }
-        return Optional.empty();
+        HairdressingService service = new HairdressingService(dtService.getName(), dtService.getPrice(), dtService.getDurationInMinutes());
+        service.setCategory(category);
+        category.addService(service);
+        categoryRepository.save(category);
+        return priceListRepository.save(service);
     }
 
     public Optional<Category> addCategory(CategoryData categoryData){
