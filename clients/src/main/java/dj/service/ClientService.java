@@ -24,27 +24,28 @@ public class ClientService {
         return StreamSupport.stream(clientIterable.spliterator(), false).collect(Collectors.toList());
     }
 
-    public Client getById(long id){
-        Optional<Client> client = clientRepository.findById(id);
-        return client.orElse(null);
+    public Optional<Client> getById(long id){
+        return clientRepository.findById(id);
     }
 
-    public Client add(Client client){
+    public Optional<Client> add(Client client){
         if(clientNotExists(client)){
-            return clientRepository.save(client);
+            return Optional.of(clientRepository.save(client));
         }
-        return new Client();
+        return Optional.empty();
     }
 
-    public Client update(Client client){
+    public Optional<Client> update(Client client){
         if(existsClientWithId(client.getId())){
-            return clientRepository.save(client);
+            return Optional.of(clientRepository.save(client));
         }
-        return new Client();
+        return Optional.empty();
     }
 
     public void delete(long id){
-        clientRepository.deleteById(id);
+        if(existsClientWithId(id)) {
+            clientRepository.deleteById(id);
+        }
     }
 
     private boolean clientNotExists(Client client){
@@ -53,7 +54,7 @@ public class ClientService {
     }
 
     private boolean existsClientWithId(long id){
-        return getById(id) != null;
+        return getById(id).isPresent();
     }
 
 }

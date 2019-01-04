@@ -22,9 +22,9 @@ public class DataLoader {
     @Autowired
     public DataLoader(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder.build();
-        loadClientsData();
+        //loadClientsData();
         loadPriceListData();
-        loadAppointmentsData();
+        //loadAppointmentsData();
     }
 
     private void loadClientsData(){

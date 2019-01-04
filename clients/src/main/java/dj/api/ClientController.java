@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -27,18 +27,28 @@ public class ClientController {
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE, params="id")
-    public Client getClientById(@RequestParam long id){
-        return clientService.getById(id);
+    public ResponseEntity<Client> getClientById(@RequestParam long id){
+        Optional<Client> clientOptional = clientService.getById(id);
+        return clientOptional.map(
+                client -> new ResponseEntity<>(client, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    public Client addClient(@RequestBody Client client){
-        return clientService.add(client);
+    public ResponseEntity<Client> addClient(@RequestBody Client client){
+        Optional<Client> clientOptional = clientService.add(client);
+        if(clientOptional.isPresent()){
+            return new ResponseEntity<>(client, HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping(consumes = APPLICATION_JSON_VALUE)
-    public Client updateClient(@RequestBody Client client){
-        return clientService.update(client);
+    public ResponseEntity<Client> updateClient(@RequestBody Client clientData){
+        Optional <Client> clientOptional=  clientService.update(clientData);
+        return clientOptional.map(
+                client -> new ResponseEntity<>(client, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
     @DeleteMapping()
