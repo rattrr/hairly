@@ -29,25 +29,24 @@ public class ClientController {
     @GetMapping(produces = APPLICATION_JSON_VALUE, params="id")
     public ResponseEntity<Client> getClientById(@RequestParam long id){
         Optional<Client> clientOptional = clientService.getById(id);
-        return clientOptional.map(
-                client -> new ResponseEntity<>(client, HttpStatus.OK))
+        return clientOptional
+                .map(client -> new ResponseEntity<>(client, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Client> addClient(@RequestBody Client client){
-        Optional<Client> clientOptional = clientService.add(client);
-        if(clientOptional.isPresent()){
-            return new ResponseEntity<>(client, HttpStatus.CREATED);
-        }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<Client> addClient(@RequestBody Client clientData){
+        Optional<Client> clientOptional = clientService.add(clientData);
+        return clientOptional
+                .map(client -> new ResponseEntity<>(client, HttpStatus.CREATED))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
     @PutMapping(consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<Client> updateClient(@RequestBody Client clientData){
         Optional <Client> clientOptional=  clientService.update(clientData);
-        return clientOptional.map(
-                client -> new ResponseEntity<>(client, HttpStatus.OK))
+        return clientOptional
+                .map(client -> new ResponseEntity<>(client, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
