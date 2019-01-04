@@ -30,25 +30,27 @@ public class PriceListService {
         return StreamSupport.stream(serviceIterable.spliterator(), false).collect(Collectors.toList());
     }
 
-    public HairdressingService getById(long id){
-        Optional<HairdressingService> service = priceListRepository.findById(id);
-        return service.orElse(null);
+    public Optional<HairdressingService> getById(long id){
+        return priceListRepository.findById(id);
     }
 
-    public HairdressingService add(HairdressingServiceData dtService){
+    public Optional<HairdressingService> add(HairdressingServiceData dtService){
         if(categoryExists(dtService.getCategory())){
             HairdressingService service = new HairdressingService(dtService.getName(), dtService.getPrice(), dtService.getDurationInMinutes());
             Category category = getCategoryByName(dtService.getCategory());
             service.setCategory(category);
             category.addService(service);
             categoryRepository.save(category);
-            return priceListRepository.save(service);
+            return Optional.of(priceListRepository.save(service));
         }
-        return new HairdressingService();
+        return Optional.empty();
     }
 
-    public Category addCategory(CategoryData categoryData){
-        return categoryRepository.save(new Category(categoryData.getName()));
+    public Optional<Category> addCategory(CategoryData categoryData){
+        if(!categoryExists(categoryData.getName())){
+            return Optional.of(categoryRepository.save(new Category(categoryData.getName())));
+        }
+        return Optional.empty();
     }
 
     private Category getCategoryByName(String name){

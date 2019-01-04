@@ -6,9 +6,13 @@ import dj.model.Category;
 import dj.model.HairdressingService;
 import dj.service.PriceListService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.ws.Response;
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -28,18 +32,27 @@ public class PriceListController {
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE, params = "id")
-    public HairdressingService getServiceById(@RequestParam long id){
-        return priceListService.getById(id);
+    public ResponseEntity<HairdressingService> getServiceById(@RequestParam long id){
+        Optional<HairdressingService> serviceOptional = priceListService.getById(id);
+        return serviceOptional
+                .map(service -> new ResponseEntity<>(service, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    public HairdressingService addService(@RequestBody HairdressingServiceData serviceData){
-        return priceListService.add(serviceData);
+    public ResponseEntity<HairdressingService> addService(@RequestBody HairdressingServiceData serviceData){
+        Optional<HairdressingService> serviceOptional = priceListService.add(serviceData);
+        return serviceOptional
+                .map(service -> new ResponseEntity<>(service, HttpStatus.CREATED))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, path="/new_category")
-    public Category addCategory(@RequestBody CategoryData categoryData){
-        return priceListService.addCategory(categoryData);
+    public ResponseEntity<Category> addCategory(@RequestBody CategoryData categoryData){
+        Optional<Category> categoryOptional = priceListService.addCategory(categoryData);
+        return categoryOptional
+                .map(category -> new ResponseEntity<>(category, HttpStatus.CREATED))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
 }
