@@ -11,6 +11,6 @@ import java.util.List;
 public interface AppointmentRepository extends CrudRepository<Appointment, Long> {
     List<Appointment> getAllByClientId(long id);
     List<Appointment> getAppointmentsByClientIdEquals(long clientId);
-    List<Appointment> getAppointmentsByStartTimeLessThanEqualAndEndTimeGreaterThanEqual(
+    List<Appointment> getAppointmentsByStartTimeLessThanAndEndTimeGreaterThan(
             LocalDateTime appointmentEndTime, LocalDateTime appointmentStartTime);
 }

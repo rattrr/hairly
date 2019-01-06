@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -32,8 +33,11 @@ public class AppointmentController {
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    public Appointment addAppointment(@RequestBody Appointment appointment){
-        return appointmentService.add(appointment);
+    public ResponseEntity<Appointment> addAppointment(@RequestBody Appointment appointmentData){
+        Optional<Appointment> appointmentOptional = appointmentService.add(appointmentData);
+        return appointmentOptional
+                .map(appointment -> new ResponseEntity<>(appointment, HttpStatus.CREATED))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
     @DeleteMapping()

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -25,22 +26,25 @@ public class AppointmentController {
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
-    public String getAllAppointments(){
-        return restTemplate.getForObject(url, String.class);
+    public List getAllAppointments(){
+        return restTemplate.getForObject(url, List.class);
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE, params="clientId")
-    public String getAllAppointmentsOfClient(@RequestParam long clientId){
-        return restTemplate.getForObject(url + "?clientId=" + clientId, String.class);
+    public List getAllAppointmentsOfClient(@RequestParam long clientId){
+        return restTemplate.getForObject(url + "?clientId=" + clientId, List.class);
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    public AppointmentData addAppointment(@RequestBody AppointmentData appointmentData){
+    public ResponseEntity<AppointmentData> addAppointment(@RequestBody AppointmentData appointmentData){
+        if(clientNotExist(appointmentData.getClientId())){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
         if(appointmentData.getEndTime() == null){
             LocalDateTime endTime = appointmentData.getStartTime().plusMinutes(getDefaultDurationOfService(appointmentData.getServiceId()));
             appointmentData.setEndTime(endTime);
         }
-        return restTemplate.postForObject(url, appointmentData, AppointmentData.class);
+        return restTemplate.postForEntity(url, appointmentData, AppointmentData.class);
     }
 
     @DeleteMapping()
@@ -49,8 +53,8 @@ public class AppointmentController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    private boolean clientExist(long clientId){
-        return restTemplate.getForObject("http://localhost:8083/clients?id=" + clientId, String.class) != null;
+    private boolean clientNotExist(long clientId){
+        return restTemplate.getForObject("http://localhost:8083/clients?id=" + clientId, String.class) == null;
     }
 
     private long getDefaultDurationOfService(long serviceId){

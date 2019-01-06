@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -27,11 +28,11 @@ public class AppointmentService {
         return appointmentRepository.getAppointmentsByClientIdEquals(clientId);
     }
 
-    public Appointment add(Appointment appointment){
+    public Optional<Appointment> add(Appointment appointment){
         if(timeperiodIsNotOverlaping(appointment) && timeperiodIsValid(appointment)){
-            return appointmentRepository.save(appointment);
+            return Optional.of(appointmentRepository.save(appointment));
         }
-        else return new Appointment();
+        return Optional.empty();
     }
 
     public void delete(long id){
@@ -41,7 +42,7 @@ public class AppointmentService {
     }
 
     private boolean timeperiodIsNotOverlaping(Appointment appointment){
-        return appointmentRepository.getAppointmentsByStartTimeLessThanEqualAndEndTimeGreaterThanEqual(
+        return appointmentRepository.getAppointmentsByStartTimeLessThanAndEndTimeGreaterThan(
                 appointment.getEndTime(), appointment.getStartTime()).isEmpty();
     }
 
