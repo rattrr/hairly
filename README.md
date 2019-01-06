@@ -1,5 +1,5 @@
-#✂✂HAIRLY salon booking system
-###modules:
+# ✂✂HAIRLY salon booking system
+### modules:
 * appointments - a module for booking and cancelling appointments 
 * clients - a module for clients management
 * pricelist - a module for storing salon's services and their prices
