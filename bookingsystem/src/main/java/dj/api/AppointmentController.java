@@ -25,7 +25,7 @@ public class AppointmentController {
         this.restTemplate = restTemplateBuilder.build();
     }
 
-    @GetMapping(produces = APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/all", produces = APPLICATION_JSON_VALUE)
     public List getAllAppointments(){
         return restTemplate.getForObject(url, List.class);
     }

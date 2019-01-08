@@ -1,7 +1,6 @@
 package dj;
 
 import dj.dto.AppointmentData;
-import dj.dto.CategoryData;
 import dj.dto.ClientData;
 import dj.dto.HairdressingServiceData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +38,6 @@ public class DataLoader {
 
     private void loadPriceListData(){
         final String servicesURL = "http://localhost:8086/pricelist";
-        restTemplate.postForObject(servicesURL + "/new_category", new CategoryData("WOMEN"), String.class);
-        restTemplate.postForObject(servicesURL + "/new_category", new CategoryData("MEN"), String.class);
         restTemplate.postForObject(servicesURL, new HairdressingServiceData("wash, styling", 55, 40, "WOMEN"), String.class);
         restTemplate.postForObject(servicesURL, new HairdressingServiceData("wash, haircut, styling", 85, 60, "WOMEN"), String.class);
         restTemplate.postForObject(servicesURL, new HairdressingServiceData("wash, styling, color", 190, 180, "WOMEN"), String.class);

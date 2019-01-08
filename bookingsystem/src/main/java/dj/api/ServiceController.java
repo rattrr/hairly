@@ -22,8 +22,8 @@ public class ServiceController {
         this.restTemplate = restTemplateBuilder.build();
     }
 
-    @GetMapping(produces = APPLICATION_JSON_VALUE)
-    public List getService(){
+    @GetMapping(path = "/all", produces = APPLICATION_JSON_VALUE)
+    public List getServices(){
         return restTemplate.getForObject(url, List.class);
     }
 
